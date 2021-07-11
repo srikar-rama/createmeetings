@@ -4,13 +4,16 @@ import withSizes from "react-sizes";
 import { RiDeleteBin5Fill } from 'react-icons/ri'
 function Main(props) {
     return (
-        <div className="row p-2" style={{ justifyContent: "space-around"}}>
+        <div className="row p-3" style={{ justifyContent: "space-around"}}>
             <div className="col-12 col-md-7 links p-2" style={{ height: props.winHeight, display: "flex", justifyContent: "center" }}>
                 <div className="card col-11 p-2 meetinglink" style={{ height: "fit-content" }}>
-                    <h4>Title of the meet</h4>
-                    <div style={{display:"flex",justifyContent:"space-around"}}>
-                        <button className="btn btn-primary col-5">Join</button>
-                        <button className="btn btn-danger col-5">Delete</button>
+                   <div style={{display:"flex",justifyContent:"space-between"}}>
+                   <h4 style={{color:"black"}}>Title of the meet</h4>
+                    <h5>Venue: <span style={{color:"black"}}>Google meet</span></h5>
+                   </div>
+                    <div style={{display:"flex",justifyContent:"space-between"}}>
+                        <button className="btn btn-primary" style={{width:"49%"}}>Join</button>
+                        <button className="btn btn-danger"style={{width:"49%"}}>Delete</button>
                     </div>
                 </div>
             </div>
