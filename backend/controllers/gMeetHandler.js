@@ -7,7 +7,7 @@
 async function meet(options) {
     const { google } = require('googleapis');
     const { GoogleAuth } = google.auth;
-    const SCOPES = ['https://www.googleapis.com/auth/calendar'];
+    const SCOPES = ['https://www.googleapis.com/auth/calendar', 'https://www.googleapis.com/auth/calendar.events'];
 
 
     //upper part for api access
@@ -70,17 +70,17 @@ async function meet(options) {
     const eventEndTime = new Date();
     // eventEndTime.setDate(parseInt((options.date).split("-")[2]));
     // eventEndTime.setHours(parseInt(options.time.split(':')[0]))
-    eventEndTime.setMinutes(eventEndTime.getMinutes()+45);
+    eventEndTime.setMinutes(eventEndTime.getMinutes() + 45);
     // eventEndTime.setMinutes(eventStartTime.getMinutes() + 45);
     console.log(eventEndTime.toLocaleTimeString())
     console.log(eventStartTime.toLocaleTimeString())
     const padLeadingZeros = (num, size) => {
-        var s = num+"";
+        var s = num + "";
         while (s.length < size) s = "0" + s;
         return s;
     }
-    const startTime = `${eventStartTime.getFullYear()}-${padLeadingZeros(eventStartTime.getMonth()+1,2)}-${padLeadingZeros(eventStartTime.getDate(), 2)}T${padLeadingZeros(eventStartTime.getHours(), 2)}:${padLeadingZeros(eventStartTime.getMinutes(), 2)}:${padLeadingZeros(eventStartTime.getSeconds(), 2)}Z`;
-    const endTime = `${eventEndTime.getFullYear()}-${padLeadingZeros(eventEndTime.getMonth()+1, 2)}-${padLeadingZeros(eventEndTime.getDate(), 2)}T${padLeadingZeros(eventEndTime.getHours(), 2)}:${padLeadingZeros(eventEndTime.getMinutes(), 2)}:${padLeadingZeros(eventEndTime.getSeconds(), 2)}Z`
+    const startTime = `${eventStartTime.getFullYear()}-${padLeadingZeros(eventStartTime.getMonth() + 1, 2)}-${padLeadingZeros(eventStartTime.getDate(), 2)}T${padLeadingZeros(eventStartTime.getHours(), 2)}:${padLeadingZeros(eventStartTime.getMinutes(), 2)}:${padLeadingZeros(eventStartTime.getSeconds(), 2)}Z`;
+    const endTime = `${eventEndTime.getFullYear()}-${padLeadingZeros(eventEndTime.getMonth() + 1, 2)}-${padLeadingZeros(eventEndTime.getDate(), 2)}T${padLeadingZeros(eventEndTime.getHours(), 2)}:${padLeadingZeros(eventEndTime.getMinutes(), 2)}:${padLeadingZeros(eventEndTime.getSeconds(), 2)}Z`
     console.log(startTime)
     console.log(endTime)
     // Create a dummy event for temp users in our calendar
@@ -88,12 +88,30 @@ async function meet(options) {
         summary: options.summary,
         location: options.location,
         description: options.description,
+        visibility: 'public',
+        anyoneCanAddSelf:true,
+        "conferenceProperties": {
+            "allowedConferenceSolutionTypes": [
+                "hangoutsMeet", "eventNamedHangout", "eventHangout"
+            ]
+        },
         colorId: 1,
         conferenceData: {
+            conferenceId: "abc-xbh-oj",
             createRequest: {
-                requestId: "zzz",
-                conferenceDataVersion: 1,
+                requestId: "azazazazjazkjazkj",
                 conferenceSolutionKey: {
+                    type: "hangoutsMeet"
+                },
+                conferenceSolution: {
+                
+                key: {
+                    type: "hangoutsMeet"
+                }
+            }
+            },
+            conferenceSolution: {
+                key: {
                     type: "hangoutsMeet"
                 }
             },
@@ -102,12 +120,10 @@ async function meet(options) {
             }
         },
         start: {
-            date: '2021-11-07',
             dateTime: startTime,
             timeZone: 'Asia/Kolkata',
         },
         end: {
-            date: '2021-11-07',
             dateTime: endTime,
             timeZone: 'Asia/Kolkata',
         },
@@ -118,10 +134,32 @@ async function meet(options) {
     let link = await calendar.events.insert({
         calendarId: 'primary',
         conferenceDataVersion: '1',
-        resource: event
+        visibility: "public",
+        id: "32434345",
+        organizer:{email:"azharuddinm2211@gmail.com",
+        self:false},
+        conferenceData: {
+            conferenceId: "abc-xbh-oj",
+            createRequest: {
+                requestId: "azazazazjazkjazkj",
+                conferenceSolutionKey: {
+                    type: "hangoutsMeet"
+                }
+            },
+            conferenceSolution: {
+                key: {
+                    type: "hangoutsMeet"
+                }
+            },
+            conferenceSolutionKey: {
+                type: "hangoutsMeet"
+            }
+        },
+        resource: event,
+        ...event
     })
     console.log(link.data)
-    return link.data.hangoutLink
+    return link.data.htmlLink
 
 }
 
@@ -129,27 +167,27 @@ module.exports.create = async (req, res) => {
     try {
         // yyyy-mm-dd
         const options = {
-            date : "2021-07-11",
-            time : "22:00",
-            summary : 'summary',
-            location : 'location',
-            description : 'description'
+            date: "2021-07-11",
+            time: "22:00",
+            summary: 'summary',
+            location: 'location',
+            description: 'description'
         };
         const createdMeet = await meet(options);
-        if(!meet){
+        if (!meet) {
             res.status(500).json({
-                status:"failed",
-                message:"No response from server"
+                status: "failed",
+                message: "No response from server"
             })
             return;
         }
         console.log(createdMeet);
         res.status(200).json({
-            status:"success"
-        })        
+            status: "success"
+        })
     } catch (error) {
         res.status(400).json({
-            status:"failed",
+            status: "failed",
             message: error.message
         })
     }
