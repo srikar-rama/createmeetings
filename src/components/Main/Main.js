@@ -12,8 +12,8 @@ function Main(props) {
                     <h5>Venue: <span style={{color:"black"}}>Google meet</span></h5>
                    </div>
                     <div style={{display:"flex",justifyContent:"space-between"}}>
-                        <button className="btn btn-primary" style={{width:"49%"}}>Join</button>
-                        <button className="btn btn-danger"style={{width:"49%"}}>Delete</button>
+                        <button className="btn btn-primary" style={{width:"49%"}}>JOIN</button>
+                        <button className="btn btn-danger"style={{width:"49%"}}>DELETE</button>
                     </div>
                 </div>
             </div>
@@ -37,8 +37,12 @@ function Main(props) {
                                 <option>Zoom</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-primary">Create</button>
+                        
                     </fieldset>
+                    <div style={{display:"flex",justifyContent:"center"}}>
+                    <button type="submit" class="btn btn-success" style={{width:"50%"}}>CREATE</button>
+                    </div>
+                    
                 </form>
             </div>
         </div>
