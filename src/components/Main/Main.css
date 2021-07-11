@@ -1,0 +1,20 @@
+.links{
+    
+    border-radius: 10px;
+    color: blue;
+    box-shadow: -1px 2px 13px -2px rgba(0,0,0,0.75);
+-webkit-box-shadow: -1px 2px 13px -2px rgba(0,0,0,0.75);
+-moz-box-shadow: -1px 2px 13px -2px rgba(0,0,0,0.75);
+}
+.sform{
+    
+    border-radius: 10px;
+    box-shadow: -1px 2px 13px -2px rgba(0,0,0,0.75);
+-webkit-box-shadow: -1px 2px 13px -2px rgba(0,0,0,0.75);
+-moz-box-shadow: -1px 2px 13px -2px rgba(0,0,0,0.75);
+}
+.meetinglink{
+    box-shadow: -1px 2px 13px -2px rgba(0,0,0,0.75);
+-webkit-box-shadow: -1px 2px 13px -2px rgba(0,0,0,0.75);
+-moz-box-shadow: -1px 2px 13px -2px rgba(0,0,0,0.75);
+}
