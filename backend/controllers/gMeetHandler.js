@@ -31,13 +31,12 @@ async function meet(options) {
         scopes: SCOPES,
     });
     let auth = new GoogleAuth({
-        keyFile: '../dbConfig/serviceAccount.json',
+        keyFile: './dbConfig/serviceAccount.json',
         scopes: SCOPES,
     })
-
-    auth.setCredentials({
-        refresh_token: options.refreshToken,
-    });
+    // auth.setCredentials({
+    //     refresh_token: options.refreshToken,
+    // });
 
     // Create a new calender instance.
     let calendar = google.calendar({ version: 'v3', auth: auth })
@@ -56,10 +55,10 @@ async function meet(options) {
 
 
     let events = result.data.items;
-    if (events.length) {
-        console.log("you are busy for this time slot !");
-        return null;
-    }
+    // if (events.length) {
+    //     console.log("you are busy for this time slot !");
+    //     return null;
+    // }
 
     //checking end
 
@@ -67,13 +66,23 @@ async function meet(options) {
 
     // Create a new event start date instance for teacher in their calendar.
     const eventStartTime = new Date();
-    eventStartTime.setDate((options.date).split("-")[2]);
+    // eventStartTime.setDate(parseInt((options.date).split("-")[2]));
     const eventEndTime = new Date();
-    eventEndTime.setDate((options.date).split("-")[2]);
-    eventEndTime.setMinutes(eventStartTime.getMinutes() + 45);
-
-
-
+    // eventEndTime.setDate(parseInt((options.date).split("-")[2]));
+    // eventEndTime.setHours(parseInt(options.time.split(':')[0]))
+    eventEndTime.setMinutes(eventEndTime.getMinutes()+45);
+    // eventEndTime.setMinutes(eventStartTime.getMinutes() + 45);
+    console.log(eventEndTime.toLocaleTimeString())
+    console.log(eventStartTime.toLocaleTimeString())
+    const padLeadingZeros = (num, size) => {
+        var s = num+"";
+        while (s.length < size) s = "0" + s;
+        return s;
+    }
+    const startTime = `${eventStartTime.getFullYear()}-${padLeadingZeros(eventStartTime.getMonth()+1,2)}-${padLeadingZeros(eventStartTime.getDate(), 2)}T${padLeadingZeros(eventStartTime.getHours(), 2)}:${padLeadingZeros(eventStartTime.getMinutes(), 2)}:${padLeadingZeros(eventStartTime.getSeconds(), 2)}Z`;
+    const endTime = `${eventEndTime.getFullYear()}-${padLeadingZeros(eventEndTime.getMonth()+1, 2)}-${padLeadingZeros(eventEndTime.getDate(), 2)}T${padLeadingZeros(eventEndTime.getHours(), 2)}:${padLeadingZeros(eventEndTime.getMinutes(), 2)}:${padLeadingZeros(eventEndTime.getSeconds(), 2)}Z`
+    console.log(startTime)
+    console.log(endTime)
     // Create a dummy event for temp users in our calendar
     const event = {
         summary: options.summary,
@@ -83,17 +92,23 @@ async function meet(options) {
         conferenceData: {
             createRequest: {
                 requestId: "zzz",
+                conferenceDataVersion: 1,
                 conferenceSolutionKey: {
                     type: "hangoutsMeet"
                 }
+            },
+            conferenceSolutionKey: {
+                type: "hangoutsMeet"
             }
         },
         start: {
-            dateTime: date1,
+            date: '2021-11-07',
+            dateTime: startTime,
             timeZone: 'Asia/Kolkata',
         },
         end: {
-            dateTime: date2,
+            date: '2021-11-07',
+            dateTime: endTime,
             timeZone: 'Asia/Kolkata',
         },
     }
@@ -105,28 +120,38 @@ async function meet(options) {
         conferenceDataVersion: '1',
         resource: event
     })
+    console.log(link.data)
     return link.data.hangoutLink
 
 }
 
 module.exports.create = async (req, res) => {
-    const options = {
-        date : "2020-12-01",
-        time : "10:59",
-        summary : 'summary',
-        location : 'location',
-        description : 'description'
-    };
-    const createdMeet = await meet(options);
-    if(!meet){
-        res.status(500).json({
+    try {
+        // yyyy-mm-dd
+        const options = {
+            date : "2021-07-11",
+            time : "22:00",
+            summary : 'summary',
+            location : 'location',
+            description : 'description'
+        };
+        const createdMeet = await meet(options);
+        if(!meet){
+            res.status(500).json({
+                status:"failed",
+                message:"No response from server"
+            })
+            return;
+        }
+        console.log(createdMeet);
+        res.status(200).json({
+            status:"success"
+        })        
+    } catch (error) {
+        res.status(400).json({
             status:"failed",
-            message:"No response from server"
+            message: error.message
         })
-        return;
     }
-    console.log(createdMeet);
-    res.status(200).json({
-        status:"success"
-    })
+
 }
