@@ -8,7 +8,7 @@ const allMeetsController = require("../controllers/allMeetsController");
 router.get('/meets', allMeetsController.getAll);
 
 // delete meet by id, query: type
-router.delete('/meets/:mid', allMeetsController.delete);
+router.delete('/meets/:id', allMeetsController.delete);
 
 // create meet , query: type
 router.post('/meets', allMeetsController.create);

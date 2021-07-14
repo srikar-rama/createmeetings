@@ -1,6 +1,7 @@
 const gMeetHandler = require("./gMeetHandler");
 const teamsHandler = require("./teamsHandler");
 const zoomHandler = require("./zoomHandler");
+const db = require("../dbConfig/dbCon");
 const MEET_TYPES = { GMEET: "gmeet", ZMEET: "zmeet", TMEET: "tmeet" };
 
 module.exports.create = async (req, res) => {
@@ -24,12 +25,12 @@ module.exports.create = async (req, res) => {
 }
 
 module.exports.delete = async (req, res) => {
-    const { mid } = req.params;
+    const { id } = req.params;
     const { type } = req.query;
-    if(!mid){
+    if (!id) {
         res.status(400).json({
             status: "failed",
-            message: "meetingId required as params"
+            message: "id required as params"
         })
     }
     if (type === MEET_TYPES.GMEET) {
@@ -51,21 +52,47 @@ module.exports.delete = async (req, res) => {
 }
 
 module.exports.getAll = async (req, res) => {
-    const { type } = req.query;
-    if (type === MEET_TYPES.GMEET) {
-        await gMeetHandler.getAll(req, res);
-        return;
+    // const { type } = req.query;
+    // if (type === MEET_TYPES.GMEET) {
+    //     await gMeetHandler.getAll(req, res);
+    //     return;
+    // }
+    // if (type === MEET_TYPES.ZMEET) {
+    //     await zoomHandler.getAll(req, res);
+    //     return;
+    // }
+    // if (type === MEET_TYPES.TMEET) {
+    //     await teamsHandler.getAll(req, res);
+    //     return;
+    // }
+    const now = Date.now();
+    try {
+        // removing expired ones
+        const expiredRefs = await db.collection("meetups").where('end_time', '<', now).get();
+        const expiredDocs = expiredRefs.docs;
+        console.log(now);
+        for (let doc of expiredDocs) {
+            console.log(doc.id)
+            const d = doc.data();
+            console.log("ENDTIME: "+d.end_time);
+            await db.collection('meetups').doc(doc.id).delete();
+        }
+        const meetups = await (await db.collection("meetups").orderBy('end_time', 'desc').get()).docs;
+        const data = [];
+        for (let doc of meetups) {
+            data.push({
+                id: doc.id,
+                ...doc.data()
+            });
+        }
+        res.status(200).json({
+            status: "success",
+            meetups: data
+        });
+    } catch (error) {
+        res.status(400).json({
+            status: "failed",
+            message: error.message
+        })
     }
-    if (type === MEET_TYPES.ZMEET) {
-        await zoomHandler.getAll(req, res);
-        return;
-    }
-    if (type === MEET_TYPES.TMEET) {
-        await teamsHandler.getAll(req, res);
-        return;
-    }
-    res.status(400).json({
-        status: "failed",
-        message: "invalid 'type' of meet"
-    })
 }
