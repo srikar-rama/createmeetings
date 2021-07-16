@@ -68,8 +68,8 @@ module.exports.create = async (req, res) => {
         const [hrs, mins] = time.split(":");
         start_time.setHours(hrs, mins);
         let end_time = new Date(start_time);
-        end_time.setMinutes(45);
-        end_time = end_time.getTime();
+        // end_time.setMinutes(45);
+        end_time = end_time.getTime()+2700000;
         const now = Date.now();
         const prevMeetRefs = await db.collection('meetups').where('type', '==', 'zmeet').where('start_time', '<=', start_time.getTime()).get();
         if(!prevMeetRefs.empty){

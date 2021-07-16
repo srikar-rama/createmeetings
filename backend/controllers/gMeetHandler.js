@@ -134,8 +134,8 @@ module.exports.create = async (req, res) => {
         const [hrs, mins] = time.split(":");
         start_time.setHours(hrs, mins);
         let end_time = new Date(start_time);
-        end_time.setMinutes(45);
-        end_time = end_time.getTime();
+        // end_time.setMinutes(45);
+        end_time = end_time.getTime() + 2700000;
         start_time = start_time.getTime();
         const meetData = {
             type: 'gmeet',

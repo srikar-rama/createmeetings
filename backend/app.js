@@ -20,7 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 // serve static files
-// app.use('/', express.static(path.join(__dirname, 'build')));
+app.use('/', express.static(path.join(__dirname, 'build')));
 
 // API ENDPOINT
 app.use("/api", routes);
