@@ -1,5 +1,4 @@
 const gMeetHandler = require("./gMeetHandler");
-const teamsHandler = require("./teamsHandler");
 const zoomHandler = require("./zoomHandler");
 const db = require("../dbConfig/dbCon");
 const MEET_TYPES = { GMEET: "gmeet", ZMEET: "zmeet", TMEET: "tmeet" };
