@@ -64,7 +64,8 @@ function Main(props) {
   Generate Meeting
 </button>
             <div className="col-12 col-md-7 links p-2" style={{ height: props.winHeight, display: "flex", flexDirection: "column", alignItems: "center" }}>
-                {meetups.map(meet => <MeetLink deleteMeet={deleteMeet} key={meet.id} {...meet} />)}
+      {meetups.length==0?<h1>No meetings scheduled!</h1>:<>
+                {meetups.map(meet => <MeetLink deleteMeet={deleteMeet} key={meet.id} {...meet} />)}</>}
             </div>
             
 
@@ -106,7 +107,7 @@ function Main(props) {
 
                     </fieldset>
                     <div style={{ display: "flex", justifyContent: "center" }}>
-                        <button type="submit" onClick={addMeet} className="btn btn-info" style={{ width: "50%" }}>CREATE</button>
+                        <button type="submit" onClick={addMeet} className="btn btn-info" data-bs-dismiss="modal" style={{ width: "50%" }}>CREATE</button>
                     </div>
 
                 </form>

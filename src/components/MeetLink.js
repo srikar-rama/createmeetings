@@ -16,7 +16,7 @@ const MeetLink = ({ id, type, title, meetLink, cred_req, password, duration, des
                 <h6 style={{marginRight: "2px" }}>Duration: <span style={{color:"black"}}>{duration}</span></h6>
                 <div style={{ position: "absolute", display: "flex", right: "0" }}>
                     <h6 style={{ marginRight: "7px",color:"black" }}>{new Date(start_time).toLocaleString()}<span style={{color:"black"}}> - </span></h6>
-                    <h6 style={{ marginRight: "7px",color:"black" }}>{new Date(start_time + 2700000).toLocaleString()}</h6>
+                    <h6 style={{ marginRight: "7px",color:"black" }}>{new Date(end_time).toLocaleString()}</h6>
                 </div>
             </div>
             <div>
