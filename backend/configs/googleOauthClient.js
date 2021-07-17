@@ -2,12 +2,12 @@ const { google } = require('googleapis');
 const { OAuth2 } = google.auth;
 //setting details 
 let oAuth2Client = new OAuth2(
-    '386996358660-eiubaaosp36vl490aj9rqfk8e36sskkh.apps.googleusercontent.com',
-    'FhWr8FdYCb0Tp7WKqBC7Xuvq'
+    '516079349358-8cuthef3p7tlmk5sp79rh8um9l7k497v.apps.googleusercontent.com',
+    'mT9cDAQc1ZdnYdZYN82Z6exe'
 )
 
 oAuth2Client.setCredentials({
-    refresh_token: '1//04YruVX3Tvm4sCgYIARAAGAQSNwF-L9IrsFCG6mpU4AzIlpC6ukB-1BTRPX2MevhxhEE8UwVC2QOGKL3FOxgJkl1unftJ_w1eKjw'
+    refresh_token: '1//04eStJ0_1K8uQCgYIARAAGAQSNwF-L9IrZrmSgbvwl39Ll4C6GuFPo_vKwpKS-57CtIIE-kFEyxZJ14MBks4EUrAzyGHU092hsuA'
 });
 
 module.exports = oAuth2Client;
