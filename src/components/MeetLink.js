@@ -1,5 +1,6 @@
 import React from 'react'
 import './Main/Main.css'
+import {MdDelete} from 'react-icons/md';
 const TYPES = {
     'gmeet': "Google Meet",
     'zmeet': "Zoom"
@@ -26,8 +27,8 @@ const MeetLink = ({ id, type, title, meetLink, cred_req, password, duration, des
             </div>
 
             <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <button className="btn btn-primary" onClick={()=>window.open(meetLink,"_blank")} target="_blank" style={{ width: "49%" }}>JOIN</button>
-                <button className="btn btn-danger" onClick={(e) => {e.preventDefault();deleteMeet(id, type)}} style={{ width: "49%" }}>DELETE</button>
+                <button className="btn btn-secondary" onClick={()=>window.open(meetLink,"_blank")} target="_blank" style={{ width: "49%" }}>JOIN</button>
+                <button className="btn btn-dark" onClick={(e) => {e.preventDefault();deleteMeet(id, type)}} style={{ width: "49%" }}><MdDelete style={{fontSize:"1.5em"}}/></button>
             </div>
         </div>
     )

@@ -52,27 +52,33 @@ function Main(props) {
             setMeetups(prev => [{ ...res.data, id: res.id }, ...prev]);
         } catch (error) {
             const { response } = error;
-            if(response)
-            {
             const { request, ...errorObject } = response;
             console.log(errorObject.data.message)
             alert(errorObject.data.message);
-            }
-            console.log(error);
-            
         }
 
     }
     return (
-        <div className="row p-3" style={{ justifyContent: "space-around" }}>
+        <div style={{justifyContent: "center",display:"flex",alignItems:"center",flexDirection:"column" }}>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" style={{margin:"10px"}}>
+  Generate Meeting
+</button>
             <div className="col-12 col-md-7 links p-2" style={{ height: props.winHeight, display: "flex", flexDirection: "column", alignItems: "center" }}>
                 {meetups.map(meet => <MeetLink deleteMeet={deleteMeet} key={meet.id} {...meet} />)}
             </div>
+            
 
-            <div className="col-12 col-md-4 sform" style={{ height: props.windowHeight }}>
-                <form>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"><legend>Create Meeting</legend></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <form>
                     <fieldset>
-                        <legend>Create Meeting</legend>
+
                         <div className="mb-3">
                             <label className="form-label">Meeting Title</label>
                             <input type="text" value={title} onChange={e => setTitle(e.target.value)} className="form-control" placeholder="title" />
@@ -100,11 +106,22 @@ function Main(props) {
 
                     </fieldset>
                     <div style={{ display: "flex", justifyContent: "center" }}>
-                        <button type="submit" onClick={addMeet} className="btn btn-success" style={{ width: "50%" }}>CREATE</button>
+                        <button type="submit" onClick={addMeet} className="btn btn-info" style={{ width: "50%" }}>CREATE</button>
                     </div>
 
                 </form>
+      
+      </div>
+      {/* <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div> */}
+    </div>
+  </div>
+</div>
+            {/* <div className="col-12 col-md-4 sform" style={{ height: props.windowHeight }}>
             </div>
+             */}
         </div>
     )
 }
