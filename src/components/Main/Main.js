@@ -52,9 +52,14 @@ function Main(props) {
             setMeetups(prev => [{ ...res.data, id: res.id }, ...prev]);
         } catch (error) {
             const { response } = error;
+            if(response)
+            {
             const { request, ...errorObject } = response;
             console.log(errorObject.data.message)
             alert(errorObject.data.message);
+            }
+            console.log(error);
+            
         }
 
     }
